@@ -1,0 +1,41 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "POdatasample",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText3",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Select1"
+				},
+				{
+					"name": "DerivedColumn1"
+				},
+				{
+					"name": "DerivedColumn2"
+				},
+				{
+					"name": "DerivedColumn3"
+				}
+			],
+			"script": "source(output(\n\t\tRegion as string,\n\t\tCountry as string,\n\t\t{Operating Unit} as string,\n\t\t{Company Code} as string,\n\t\t{ Company Name} as string,\n\t\t{Cost Centre} as string,\n\t\t{Cost Center Description} as string,\n\t\tPlant as string,\n\t\t{Plant Description} as string,\n\t\t{Purchase Order No} as string,\n\t\t{Accounting Document} as string,\n\t\t{Posting Key (Vendor)} as string,\n\t\t{Post key description } as string,\n\t\t{PO Doc Date} as string,\n\t\t{PO Invoice Receipt Date} as string,\n\t\t{Invoice Doc Date} as string,\n\t\t{Invoice Posting Date} as string,\n\t\t{TNT Period / Year} as string,\n\t\tVendor as string,\n\t\t{Vendor Name} as string,\n\t\t{Vendor Account Group} as string,\n\t\t{Vendor Account Group Description} as string,\n\t\t{Material Group Level 1} as string,\n\t\t{ Material Group Level 1 Description} as string,\n\t\t{Material Group Level 2} as string,\n\t\t{ Material Group Level 2 Description} as string,\n\t\t{Material Group Level} as string,\n\t\t{Material Group Level Description} as string,\n\t\t{G/L Account} as string,\n\t\t{ GL account Description} as string,\n\t\t{Invoice value} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 select(mapColumn(\n\t\tRegion,\n\t\tCountry,\n\t\t{Operating Unit},\n\t\t{Company Code},\n\t\t{ Company Name},\n\t\t{Cost Centre},\n\t\t{Cost Center Description},\n\t\tPlant,\n\t\t{Plant Description},\n\t\t{Purchase Order No},\n\t\t{Accounting Document},\n\t\t{Posting Key (Vendor)},\n\t\t{Post key description },\n\t\t{PO Doc Date},\n\t\t{PO Invoice Receipt Date},\n\t\t{Invoice Doc Date},\n\t\t{Invoice Posting Date},\n\t\t{TNT Period / Year},\n\t\tVendor,\n\t\t{Vendor Name},\n\t\t{Vendor Account Group},\n\t\t{Vendor Account Group Description},\n\t\t{Material Group Level 1},\n\t\t{ Material Group Level 1 Description},\n\t\t{Material Group Level 2},\n\t\t{ Material Group Level 2 Description},\n\t\t{Material Group Level},\n\t\t{Material Group Level Description},\n\t\t{G/L Account},\n\t\t{G/L account name} = { GL account Description},\n\t\t{Invoice value}\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 derive({PO-Non_Po} = \"PO\",\n\t\tPODocDate = toDate({PO Doc Date},'dd/MM/yyyy'),\n\t\tPOInvoiceReceiptDate = toDate({PO Invoice Receipt Date},'dd/MM/yyyy'),\n\t\tInvoiceDocDate = toDate({Invoice Doc Date},'dd/MM/yyyy'),\n\t\tInvoicePostingDate = toDate({Invoice Posting Date},'dd/MM/yyyy'),\n\t\t{Rule flag} = \"Po Data\",\n\t\t{Vendor Name 2} = upper({Vendor Name}),\n\t\t{GL Account Name 2} = upper({G/L account name})) ~> DerivedColumn1\nDerivedColumn1 derive({Vendor & GL Name} = concat({Vendor Name 2}, ' / ', {GL Account Name 2}),\n\t\tScope = case({Vendor Account Group Description}=='Intercompany Vendor', 'Intercompany Vendor exclusions', \r\ncase({Vendor Account Group Description} =='Statutory Authorities', 'Statutory Authorities exclusions',{Vendor Account Group Description}))) ~> DerivedColumn2\nDerivedColumn2 derive(Scope = case(contains([{G/L account name}],'VAT'), 'VAT Exclusions',\r\ncase(contains([{G/L account name}],'ICR'), 'ICR Exclusions', {G/L account name}))) ~> DerivedColumn3\nDerivedColumn3 sink(input(\n\t\tColumn_1 as string,\n\t\tColumn_2 as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+		}
+	}
+}

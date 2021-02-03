@@ -1,0 +1,7 @@
+{
+	"name": "Self-HostedIR",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "We can use this IR work in the private and public networks"
+	}
+}

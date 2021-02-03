@@ -1,0 +1,147 @@
+{
+	"name": "POdatasample",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorageLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Spend by GL (PO Invoices)",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "POInvoicesSAMPLE.xlsx",
+				"container": "salesdata"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "Region",
+				"type": "String"
+			},
+			{
+				"name": "Country",
+				"type": "String"
+			},
+			{
+				"name": "Operating Unit",
+				"type": "String"
+			},
+			{
+				"name": "Company Code",
+				"type": "String"
+			},
+			{
+				"name": " Company Name",
+				"type": "String"
+			},
+			{
+				"name": "Cost Centre",
+				"type": "String"
+			},
+			{
+				"name": "Cost Center Description",
+				"type": "String"
+			},
+			{
+				"name": "Plant",
+				"type": "String"
+			},
+			{
+				"name": "Plant Description",
+				"type": "String"
+			},
+			{
+				"name": "Purchase Order No",
+				"type": "String"
+			},
+			{
+				"name": "Accounting Document",
+				"type": "String"
+			},
+			{
+				"name": "Posting Key (Vendor)",
+				"type": "String"
+			},
+			{
+				"name": "Post key description ",
+				"type": "String"
+			},
+			{
+				"name": "PO Doc Date",
+				"type": "String"
+			},
+			{
+				"name": "PO Invoice Receipt Date",
+				"type": "String"
+			},
+			{
+				"name": "Invoice Doc Date",
+				"type": "String"
+			},
+			{
+				"name": "Invoice Posting Date",
+				"type": "String"
+			},
+			{
+				"name": "TNT Period / Year",
+				"type": "String"
+			},
+			{
+				"name": "Vendor",
+				"type": "String"
+			},
+			{
+				"name": "Vendor Name",
+				"type": "String"
+			},
+			{
+				"name": "Vendor Account Group",
+				"type": "String"
+			},
+			{
+				"name": "Vendor Account Group Description",
+				"type": "String"
+			},
+			{
+				"name": "Material Group Level 1",
+				"type": "String"
+			},
+			{
+				"name": " Material Group Level 1 Description",
+				"type": "String"
+			},
+			{
+				"name": "Material Group Level 2",
+				"type": "String"
+			},
+			{
+				"name": " Material Group Level 2 Description",
+				"type": "String"
+			},
+			{
+				"name": "Material Group Level",
+				"type": "String"
+			},
+			{
+				"name": "Material Group Level Description",
+				"type": "String"
+			},
+			{
+				"name": "G/L Account",
+				"type": "String"
+			},
+			{
+				"name": " GL account Description",
+				"type": "String"
+			},
+			{
+				"name": "Invoice value",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
